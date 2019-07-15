@@ -22,3 +22,4 @@ let objs = {}; //objs.isString = fn ...
 let obj = 'abc';
 
 console.log(objs.isString(obj));
+

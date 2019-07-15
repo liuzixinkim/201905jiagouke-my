@@ -18,7 +18,7 @@ let resolvePromise = (promise2,x,resolve,reject) => { //统一处理结果
         //第一层判断 有可能是一个promise
         try{
             let then = x.then; //promise一定有then方法
-            if(typeof then === 'function'){ //如果是函数 我就认识是一个promise
+            if(typeof then === 'function'){ //如果是函数 我就认为是一个promise
                 then.call(x,(y)=>{ //用函数的返回的promise 采用他的状态
                     if(called) return;
                     called = true;
