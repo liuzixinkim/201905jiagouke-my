@@ -118,6 +118,22 @@ class Promise{
     catch(errCallback){
         return this.then(null,errCallback)
     }
+
+    finally(callback){
+        return this.then((data)=>{
+            // return new Promise((resolve,reject)=>{
+            //     resolve(callback())
+            // }).then(()=>data);
+            return Promise.resolve(callback()).then(()=>data)
+            // return data;
+        },(err)=>{
+            // return new Promise((resolve,reject)=>{
+            //     reject(callback())
+            // }).then(()=>{throw err});
+            return Promise.resolve(callback()).then(()=>{throw err})
+            // throw err;
+        })
+    }
 }
 
 Promise.resolve = (value) => {
@@ -132,11 +148,59 @@ Promise.reject = (value) => {
     })
 }
 
+function isPromise(x){
+    if(typeof x === 'function' || (typeof x === 'object' && x !== null)){
+        if(typeof x.then === 'function'){
+            return true;
+        }
+    }
+    return false;
+}
+
+
+
+Promise.all = (values) => {
+    return new Promise((resolve,reject)=>{
+        let arr = [];
+        let i = 0; //计数器
+
+        let processData = (key,value) => {
+            arr[key] = value;
+            if(++i === values.length){
+                resolve(arr) //存完值了 走resolve 并把值返回
+            }
+        }
+        for(let i=0; i<values.length; i++){
+            let current = values[i]; // current 有可能是promise或者普通值 写个方法
+            if(isPromise(current)){//是promise 执行 成功:拿到返回的结果 存起来 失败:走reject
+                current.then((y)=>{
+                    processData(i,y);
+                },reject)
+            }else{ //是普通值 存起来 有序
+                processData(i,current);
+            }
+        }
+    })
+}
+
+Promise.race = (values) => {
+    return new Promise((resolve,reject)=>{
+        for(let i=0; i<values.length; i++){
+            let current = values[i]; // current 有可能是promise或者普通值 写个方法
+            if(isPromise(current)){//是promise 执行 
+                current.then(resolve,reject)
+            }else{ //是普通值 存起来 有序
+                resolve(current);
+            }
+        }
+    })
+}
 
 
 
 
-promise.deferred = function (){
+
+Promise.deferred = function (){
     let dfd = {};
     dfd.promise = new Promise((resolve, reject)=>{
         dfd.resolve = resolve;
@@ -144,9 +208,6 @@ promise.deferred = function (){
     })
     return dfd;
 }
-
-
-
 
 
 
