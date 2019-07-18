@@ -2,13 +2,13 @@
 // const Promise = require('./promise2');
 
 let p = new Promise((resolve,reject)=>{
-    reject(100)
+    resolve(100)
 })
 
 p.finally(()=>{
     return new Promise((resolve,reject)=>{
         setTimeout(()=>{
-            resolve(2000);
+            resolve(2000)
         },3000)
     })
 }).then((data)=>{
@@ -29,3 +29,4 @@ p.finally(()=>{
 // p2.then((data)=>{
 //     console.log(data)
 // })
+

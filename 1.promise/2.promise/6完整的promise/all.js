@@ -7,5 +7,7 @@ Promise.all(
     fs.readFile('./age.txt'),
     1,
     2
-])
-.then((data)=>{console.log(data)})
+],'utf8')
+.then((data)=>{console.log(data)},(err)=>{
+    console.log('err',err)
+})
