@@ -29,3 +29,4 @@ let s4 = Symbol.for('liu');
 console.log(s3 === s4);
 console.log(Symbol.keyFor(s4))
 
+
