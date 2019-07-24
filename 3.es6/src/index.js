@@ -42,6 +42,7 @@ class Animal2 {
     }
 
     static flag = 'animal';
+    
     static fn (){
         return 'fn'
     }

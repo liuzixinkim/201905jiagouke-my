@@ -3,11 +3,17 @@
 function Animal(){
     this.type = '哺乳类'; //实例上的属性
     this.a = {}
+    // this.eat = function(){
+    //     return 123
+    // }
 }
 
 Animal.prototype.home = {};//公共属性
 Animal.prototype.fn = function(){ //公共方法
 
+}
+Animal.prototype.eat = function(){ //公共方法
+    return 456
 }
 
 Animal.a2 = {};//静态属性
@@ -17,6 +23,8 @@ Animal.fn2 = function (){ //静态方法
 
 let animal = new Animal();
 let animal2 = new Animal();
+console.log(Animal.fn2())
+console.log('eat',animal.eat())
 // console.log(animal.home == animal2.home)
 
 // console.log(animal.type) //拿不到静态属性或方法
