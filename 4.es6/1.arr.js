@@ -51,3 +51,23 @@ let r = compose(addTag,len,sum)('a','b','c')
 
 console.log(r)
 
+
+
+
+//raduce的实现原理
+Array.prototype.myReduce = function (callback,prev){
+    for(let i = 0; i<this.length; i++){ 
+        if(typeof prev === 'undefined'){
+            prev = callback(this[i],this[i+1],i+1,this)
+            i++
+        }else{
+            prev = callback(prev,this[i],i,this)
+        }
+    }
+    return prev;
+}
+
+let r = [1,2,3,4].myReduce((prev,current)=>{
+    return prev + current
+})
+console.log(r)
