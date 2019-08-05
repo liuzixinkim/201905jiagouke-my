@@ -1,0 +1,19 @@
+#! /usr/bin/env node
+
+const program = require("commander");
+
+program
+  .option("-p, --port <type>", "set port")
+  .option("-c, --cwd <type>", "set directory");
+let opts = program.parse(process.argv);
+
+
+let Server = require('../static-server.js');
+
+let server = new Server({
+    prot:3000,
+    cwd:process.cwd(),
+    ...opts
+});
+
+server.start()
