@@ -15,10 +15,19 @@ http.createServer((req,res)=>{
             return;
         }
         if(statObj.isFile()){
-            //10s内发起同样的请求 就别再来找我了
-            res.setHeader('Cache-Control','max-age=10')
-            
-            res.setHeader('Expires',new Date(Date.now()+20*1000).toGMTString())
+            let currentFileCtime = statObj.ctime.toGMTString();
+            let clientHeader = req.headers['if-modified-since'];
+            if(clientHeader){ 
+                
+                if(clientHeader === currentFileCtime){
+                    res.statusCode = 304;
+                    res.end();
+                    return;
+                }
+            }
+            res.setHeader('Cache-Control','no-cache')
+            res.setHeader('Last-Modified',currentFileCtime)
+           
             fs.createReadStream(abspath).pipe(res)
         }
     })
